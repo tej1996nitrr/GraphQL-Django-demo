@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 django = "*"
 graphene-django = "*"
+graphene = "*"
 
 [requires]
 python_version = "3.7"
