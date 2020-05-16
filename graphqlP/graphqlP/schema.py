@@ -1,5 +1,5 @@
 import graphene
-from ..graphqlA import schema 
+from graphqlA import schema 
 
 
 class Query(schema.Query,graphene.ObjectType):
