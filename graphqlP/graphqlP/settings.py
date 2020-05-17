@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphqlA',
     'graphene_django',
      'django_filters',
+     'ingredients'
 ]
 
 GRAPHENE={
