@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'graphqlA',
     'graphene_django',
      'django_filters',
-     'ingredients'
+     'ingredients',
+     'movies'
 ]
 
 GRAPHENE={
