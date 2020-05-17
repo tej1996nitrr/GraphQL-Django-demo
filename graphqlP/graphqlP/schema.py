@@ -1,8 +1,7 @@
 import graphene
 # from graphqlA import schema 
-from ingredients import schema 
-# class Mutation(schema.Mutation,graphene.ObjectType):
-#     pass
+# from ingredients import schema
+from movies import schema
 class Query(schema.Query,graphene.ObjectType):
     pass    
 class Mutation(schema.Mutation, graphene.ObjectType):

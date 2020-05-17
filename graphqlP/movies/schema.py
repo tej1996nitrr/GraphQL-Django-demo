@@ -74,45 +74,45 @@ class UpdateActor(graphene.Mutation):
 
 class CreateMovie(graphene.Mutation):
     class Arguments:
-        movie_name = MovieInput(required=True)
+        inputName = MovieInput(required=True)
     ok = graphene.Boolean()
     movie  = graphene.Field(MovieType)
 
     @staticmethod
-    def mutate(root,info,input=None):
+    def mutate(root,info,inputName=None):
         ok = True
         actors=[]
-        for actor_input in input.actors:
+        for actor_input in inputName.actors:
             actor = Actor.objects.get(pk=actor_input.id)
             if actor is None:
                 return CreateMovie(ok=False,movie=None)
             actors.append(actor)
-        movie_instance = Movie(title=input.title,year=input.year)
+        movie_instance = Movie(title=inputName.title,year=inputName.year)
         movie_instance.save()
         movie_instance.actors.set(actors)
         return CreateMovie(ok=ok,movie=movie_instance)
 class UpdateMovie(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
-        movie_name = MovieInput(required=True)
+        inputName = MovieInput(required=True)
 
     ok = graphene.Boolean()
     movie = graphene.Field(MovieType)
 
     @staticmethod
-    def mutate(root, info, id, input=None):
+    def mutate(root, info, id, inputName=None):
         ok = False
         movie_instance = Movie.objects.get(pk=id)
         if movie_instance:
             ok = True
             actors = []
-            for actor_input in input.actors:
+            for actor_input in inputName.actors:
               actor = Actor.objects.get(pk=actor_input.id)
               if actor is None:
                 return UpdateMovie(ok=False, movie=None)
               actors.append(actor)
-            movie_instance.title=input.title
-            movie_instance.year=input.yearce.save()
+            movie_instance.title=inputName.title
+            movie_instance.year=inputName.year
             movie_instance.actors.set(actors)
             return UpdateMovie(ok=ok, movie=movie_instance)
         return UpdateMovie(ok=ok, movie=None)
@@ -121,5 +121,64 @@ class Mutation(graphene.ObjectType):
     update_actor = UpdateActor.Field()
     create_movie = CreateMovie.Field()
     update_movie = UpdateMovie.Field()
-    
+
 schema = graphene.Schema(query=Query, mutation=Mutation)
+
+
+#add a actor
+# mutation createActor {
+#   createActor(input: {
+#     name: "Tom Hanks"
+#   }) {
+#     ok
+#     actor {
+#       id
+#       name
+#     }
+#   }
+# }
+#add a movie
+# mutation createMovie {
+#   createMovie(inputName: {
+#     title: "Cast Away",
+#     actors: [
+#       {
+#         id: 3
+#       }
+#     ]
+#     year: 1999
+#   }) {
+#     ok
+#     movie{
+#       id
+#       title
+#       actors {
+#         id
+#         name
+#       }
+#       year
+#     }
+#   }
+# }
+# mutation updateMovie {
+#   updateMovie(id: 1, inputName: {
+#     title: "Cast Away",
+#     actors: [
+#       {
+#         id: 3
+#       }
+#     ]
+#     year: 2000
+#   }) {
+#     ok
+#     movie{
+#       id
+#       title
+#       actors {
+#         id
+#         name
+#       }
+#       year
+#     }
+#   }
+# }
